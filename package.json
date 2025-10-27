@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "devOps",
+    "core",
+    "nodejs"
+  ],
+  "author": "jordantanaliga100",
   "license": "ISC",
-  "packageManager": "pnpm@10.13.1"
+  "packageManager": "pnpm@10.13.1",
+  "dependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6"
+  }
 }
