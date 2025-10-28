@@ -17,9 +17,27 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('base/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: base/node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('base/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
 
       - name: Install Dependencies
-        run: pnpm install
+        run: cd base && pnpm install
 
       - name: Run Tests
-        run: pnpm test
+        run: cd base && pnpm test
