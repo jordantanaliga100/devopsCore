@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": " tsnd --clear --respawn --transpile-only src/index.ts",
-    "test": "tsnd --clear --respawn --transpile-only  src/index.test.ts"
+    "test": "tsnd  --transpile-only  src/index.test.ts"
   },
   "keywords": [
     "devOps",
