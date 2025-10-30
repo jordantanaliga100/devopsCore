@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "push": "./push.sh"
   },
   "dependencies": {
     "express": "^5.1.0"
