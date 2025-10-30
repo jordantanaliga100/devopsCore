@@ -8,10 +8,11 @@ USER app
 RUN pnpm install --frozen-lockfile
 
 
-
 FROM base AS dev
-
-COPY --chown=app:app . .
+COPY --chown=user:app . .
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
+
+
+
 
