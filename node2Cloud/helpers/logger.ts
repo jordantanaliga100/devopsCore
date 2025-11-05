@@ -10,8 +10,8 @@ export const logger = winston.createLogger({
     //   (i.e., error, fatal, but not other levels)
     //
     new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    //
-    // - Write all logs with importance level of `info` or higher to `combined.log`
+    //info` or higher to `combined.log`
+    // - Write all logs with importance level of `
     //   (i.e., fatal, error, warn, and info, but not trace)
     //
     new winston.transports.File({ filename: 'logs/combined.log' }),
