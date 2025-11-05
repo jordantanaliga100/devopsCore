@@ -1,7 +1,7 @@
-import { logger } from "#config/logger.js"
 import cors from 'cors'
 import type { NextFunction, Request, RequestHandler, Response } from 'express'
 import express from 'express'
+import { logger } from "../helpers/logger.js"
 
 export const TopMiddlewares: RequestHandler[] = [
   cors({

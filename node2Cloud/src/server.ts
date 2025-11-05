@@ -1,8 +1,14 @@
+import { initDb } from "../config/db.js"
+import "../config/env.js"
 import app from './app.js'
 
 const PORT = Number(process.env.PORT) || 5000
-const startServer = () => {
+const startServer = async () => {
   try {
+    // db connection here...
+    const db = await initDb()
+    // scattered db instance...
+    app.locals.db = db
     app.listen(PORT, () => {
       console.log(`Server Alive: http://localhost:${PORT} 🚀 `)
     })
@@ -12,3 +18,4 @@ const startServer = () => {
 }
 
 startServer()
+

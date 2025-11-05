@@ -7,7 +7,10 @@ const app: Express = express()
 TopMiddlewares.forEach(mw => app.use(mw))
 
 app.get('/', (req: Request, res: Response) => {
-  res.send(`Alive 🚀`)
+  const db = req.app.locals.db;
+
+  const data = db.select().from('users')
+  res.json({msg:`Alive 🚀`, data: data})
 })
 
 BottomMiddlewares.forEach(mw => app.use(mw))
