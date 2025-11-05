@@ -1,9 +1,9 @@
 import type { Express, Request, Response } from 'express'
 import express from 'express'
-import { BottomMiddlewares } from '../middlewares/Bottom.js'
-import { TopMiddlewares } from '../middlewares/Top.js'
-import { users } from '../models/schema.js'
-import { initRoutes } from '../routes/initRoutes.js'
+import { BottomMiddlewares } from './middlewares/Bottom.js'
+import { TopMiddlewares } from './middlewares/Top.js'
+import { users } from './models/schema.js'
+import { initRoutes } from './routes/initRoutes.js'
 
 const app: Express = express()
 
