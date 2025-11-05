@@ -17,5 +17,5 @@ export const conf = config({ path: envFile! })
 if (conf.error) {
   console.error(`❌ Failed to load ${envFile}:`, conf.error)
 } else {
-  console.log(`✅ Loaded environment: ${env}`)
+  console.log(`🔥 Loaded environment: ${env}`)
 }
