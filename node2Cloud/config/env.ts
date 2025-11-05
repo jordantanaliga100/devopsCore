@@ -1,6 +1,6 @@
 import { config } from 'dotenv'
 
-const env = process.env.NODE_ENV
+const env = process.env.NODE_ENV || 'production'
 
 const envMap: Record<string, string> = {
   production: '.env.prod',
