@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: devops-kubernetes-api-service
+  name: k8-service
   labels:
-    app: devops-kubernetes-api
+    app: k8-service
 spec:
   selector:
-    app: k8-api
+    app: k8
   ports:
     - protocol: TCP
-      port: 5000 # Service port
-      targetPort: 5000 # Container port
+      port: 3000 # Service port
+      targetPort: 3000 # Container port
   type: NodePort # change to LoadBalancer if running in cloud
 

@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: k8-api
+  name: k8
   labels:
-    app: k8-api
+    app: k8
 spec:
-  replicas: 2
+  replicas: 5
   selector:
     matchLabels:
-      app: k8-api
+      app: k8
   template:
     metadata:
       labels:
-        app: k8-api
+        app: k8
 
     spec:
       containers:
-        - name: k8-api
-          image: jordantanaliga100/k8-api:latest
+        - name: k8
+          image: jordantanaliga100/k8:1.0.2
           ports:
-            - containerPort: 5000
+            - containerPort: 3000
           env:
             - name: NODE_ENV
               value: "production"
@@ -37,12 +37,12 @@ spec:
           readinessProbe:
             httpGet:
               path: /readyz
-              port: 5000
+              port: 3000
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 5000
+              port: 3000
             initialDelaySeconds: 10
             periodSeconds: 20
