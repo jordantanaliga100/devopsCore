@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start:prod": "NODE_ENV=prod  node  dist/index.js ",
-    "start:dev": "NODE_ENV=local tsx watch src/index.ts "
+    "start:dev": "NODE_ENV=local tsx watch src/index.ts ",
+    "lint": " eslint . ",
+    "format": " prettier . --write"
   },
   "keywords": [],
   "author": "",
@@ -19,13 +21,21 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@tsconfig/node20": "^20.1.6",
     "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.6.1",
+    "lint-staged": "^16.2.6",
+    "prettier": "3.6.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3"
   }
 }
