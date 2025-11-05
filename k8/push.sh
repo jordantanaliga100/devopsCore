@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Interactive Git add, commit, push script (repo-only)
-echo "📝 Git Interactive Script (Repo-Only)"
+echo "📝 Interactive Git... running"
 
 # Show current branch
 CURRENT_BRANCH=$(git branch --show-current)

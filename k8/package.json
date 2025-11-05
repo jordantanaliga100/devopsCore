@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "node --watch index.js",
     "start": "node index.js",
-    "push": "./push.sh"
+    "push": "./push.sh",
+    "deploy": "sh deploy.sh"
   },
   "dependencies": {
     "express": "^5.1.0"
