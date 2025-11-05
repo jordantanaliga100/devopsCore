@@ -1,6 +1,13 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@controllers/*": ["src/controllers/*"],
+      "@utils/*": ["src/utils/*"],
+      "@config/*": ["config/*"]
+    },
     // File Layout
     "rootDir": ".",
     "outDir": "./dist",
@@ -52,3 +59,4 @@
   ],
   "exclude": ["node_modules", "dist", "eslint.config.ts"]
 }
+

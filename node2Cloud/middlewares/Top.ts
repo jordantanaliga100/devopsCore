@@ -1,5 +1,6 @@
+import { logger } from "#config/logger.js"
 import cors from 'cors'
-import type { RequestHandler } from 'express'
+import type { NextFunction, Request, RequestHandler, Response } from 'express'
 import express from 'express'
 
 export const TopMiddlewares: RequestHandler[] = [
@@ -12,4 +13,9 @@ export const TopMiddlewares: RequestHandler[] = [
   express.json(),
   express.urlencoded({ extended: true }),
   express.static('./public'),
+  (req: Request, res: Response, next: NextFunction) => {
+    logger.info("Hello from Acquisitions ! ")
+  next()
+  }
+  
 ]
