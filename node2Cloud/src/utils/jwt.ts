@@ -8,12 +8,10 @@ export interface JWTPayload {
   [key: string]: unknown
 }
 
-export class JWT {
-  // ✅ STATIC properties for shared configuration
-  private static readonly secret: string = process.env.JWT_SECRET || 'fallback-secret'
+export class Jwt {
+  private static readonly secret: string = process.env.JWT_SECRET || 'secret'
   private static readonly expiresIn: string | number = '1d'
 
-  // ✅ STATIC methods for direct call
   public static sign(payload: JWTPayload): string {
     try {
       return jwt.sign(payload, this.secret, {

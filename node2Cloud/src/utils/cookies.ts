@@ -19,7 +19,7 @@ export class Cookie {
     }
   }
 
-  static set(res: Response, name: string, value: string, options: CookieOptions = {}): void {
+  static set(res: Response, name: string, value: unknown, options: CookieOptions = {}): void {
     res.cookie(name, value, { ...this.getDefaultOptions(), ...options })
   }
 

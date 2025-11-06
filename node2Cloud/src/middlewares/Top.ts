@@ -3,8 +3,6 @@ import cors from 'cors'
 import type { RequestHandler } from 'express'
 import express from 'express'
 import helmet from 'helmet'
-import morgan from 'morgan'
-import { logger } from '../helpers/logger.js'
 
 export const TopMiddlewares: RequestHandler[] = [
   express.json(),
@@ -18,9 +16,9 @@ export const TopMiddlewares: RequestHandler[] = [
   }),
   cookieParser(),
   helmet(),
-  morgan('combined', {
-    stream: { write: message => logger.info(`(Acquisitions) ${message.trim()}`) },
-  }),
+  // morgan('combined', {
+  //   stream: { write: message => logger.info(`(Acquisitions) ${message.trim()}`) },
+  // }),
   // (req: Request, res: Response, next: NextFunction) => {
   //   logger.info('Hello from Acquisitions ! ')
   //   next()
