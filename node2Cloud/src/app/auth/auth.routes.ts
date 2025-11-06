@@ -7,8 +7,10 @@ router
   .get((req, res) => {
     res.send('On Auth ')
   })
-  .post(() => {
-    // Handle POST request to root
+  .post((req, res) => {
+    console.log(req.body)
+
+    res.send('On Auth ')
   })
 
 router
