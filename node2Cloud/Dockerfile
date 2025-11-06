@@ -1,42 +1,100 @@
-# Multi-stage Dockerfile for Node.js acquisitions application
+# 🔥 OLD WAY 🔥 
 
-# Base image with Node.js
+# # Multi-stage Dockerfile for Node.js acquisitions application
+
+# # Base image with Node.js
+# FROM node:20-alpine AS base
+
+# # Set working directory
+# WORKDIR /app
+
+# # Copy package files
+# COPY package*.json ./
+
+# # Install dependencies
+# RUN npm ci --only=production && npm cache clean --force
+
+# # Copy source code
+# COPY . .
+
+# # Create non-root user for security
+# RUN addgroup -g 1001 -S nodejs && \
+#     adduser -S nodejs -u 1001
+
+# # Change ownershipe of th app directory
+# RUN chown -R nodejs:nodejs /app
+# USER nodejs
+
+# # Expose the port
+# EXPOSE 5000
+
+# # Health check
+# HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+#   CMD node -e "require('http').get('http://localhost:5000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => { process.exit(1) })"
+
+# # Development stage
+# FROM base AS development
+# USER root
+# RUN npm ci && npm cache clean --force
+# USER nodejs
+# CMD ["npm", "run", "start:dev"]
+
+# # Production stage
+# FROM base AS production
+# CMD ["npm", "start:prod"]
+
+
+# 🔥 MODERN WAY 🔥 
+# ============================
+# Base minimal layer
+# ============================
 FROM node:20-alpine AS base
-
-# Set working directory
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
-
-# Copy source code
-COPY . .
-
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-
-# Change ownershipe of th app directory
-RUN chown -R nodejs:nodejs /app
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs \
+  && adduser -u 1001 -S nodejs
 USER nodejs
 
-# Expose the port
-EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:5000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => { process.exit(1) })"
-
-# Development stage
+# ============================
+# Development stage (TS direct run)
+# ============================
 FROM base AS development
 USER root
 RUN npm ci && npm cache clean --force
 USER nodejs
-CMD ["npm", "run", "start:dev"]
 
-# Production stage
-FROM base AS production
-CMD ["npm", "start:prod"]
+COPY . .
+
+EXPOSE 5000
+CMD ["npm", "run", "start:dev"]   # <--- this runs tsx/ts-node
+
+
+# ============================
+# Builder stage (TS → JS compile)
+# ============================
+FROM base AS builder
+USER root
+RUN npm ci && npm cache clean --force
+USER nodejs
+
+COPY . .
+RUN npm run build
+
+
+# ============================
+# Production (run JS only)
+# ============================
+FROM node:20-alpine AS production
+WORKDIR /app
+
+COPY package*.json ./
+USER root
+RUN npm ci --only=production && npm cache clean --force
+USER nodejs
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 5000
+CMD ["npm", "run", "start:prod"]
