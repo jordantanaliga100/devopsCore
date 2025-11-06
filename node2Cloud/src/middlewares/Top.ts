@@ -4,7 +4,9 @@ import type { RequestHandler } from 'express'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
-import xss from 'xss-clean'
+import morgan from 'morgan'
+// import xss from 'xss-clean'
+import { logger } from '../helpers/logger.js'
 
 export const TopMiddlewares: RequestHandler[] = [
   express.json(),
@@ -23,12 +25,8 @@ export const TopMiddlewares: RequestHandler[] = [
     max: 100, // limit each IP to 100 requests per window
     message: 'Too many requests, please try again later.',
   }),
-  xss(),
-  // morgan('combined', {
-  //   stream: { write: message => logger.info(`(Acquisitions) ${message.trim()}`) },
-  // }),
-  // (req: Request, res: Response, next: NextFunction) => {
-  //   logger.info('Hello from Acquisitions ! ')
-  //   next()
-  // },
+  // xss(),
+  morgan('combined', {
+    stream: { write: message => logger.info(`(Acquisitions) ${message.trim()}`) },
+  }),
 ]

@@ -6,7 +6,15 @@ import { userModel } from './models/user.model.js'
 import { initRoutes } from './routes/initRoutes.js'
 
 const app: Express = express()
-
+app.use((req, res, next) => {
+  const originalQuery = req.query
+  Object.defineProperty(req, 'query', {
+    get: () => originalQuery,
+    configurable: false,
+    enumerable: true,
+  })
+  next()
+})
 TopMiddlewares.forEach(mw => app.use(mw))
 
 app.get('/', async (req: Request, res: Response) => {

@@ -1,5 +1,4 @@
 import type { NextFunction, Request, Response } from 'express'
-import { ErrorClass } from '../../errors/index.js'
 import { Cookie } from '../../utils/cookies.js'
 import { formatValidationErro } from '../../utils/format.js'
 import { signInSchema, signUpSchema } from '../../validations/auth.validations.js'
@@ -65,7 +64,6 @@ export const LOGOUT_USER = async (
   try {
     // Clear the session cookie
     Cookie.clear(res, 'session')
-    Cookie.clear(res, 'id')
 
     // Send response
     res.status(200).json({ status: 'OK', message: 'User logged out' })
@@ -76,17 +74,16 @@ export const LOGOUT_USER = async (
   }
 }
 // Forgot Password
-export const FORGOT_PASSWORD = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    res.status(200).json({ status: 'OK', message: 'User registererd' })
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new ErrorClass.BadRequest()
-    }
-    next(error)
-  }
-}
+// export const FORGOT_PASSWORD = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ): Promise<void> => {
+//   try {
+//     res.status(200).json({ status: 'OK', message: 'User registererd' })
+//   } catch (error: unknown) {
+//     if (error instanceof Error) {
+//       next(error)
+//     }
+//   }
+// }
