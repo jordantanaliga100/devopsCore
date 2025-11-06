@@ -2,7 +2,9 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import type { RequestHandler } from 'express'
 import express from 'express'
+import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
+import xss from 'xss-clean'
 
 export const TopMiddlewares: RequestHandler[] = [
   express.json(),
@@ -16,6 +18,12 @@ export const TopMiddlewares: RequestHandler[] = [
   }),
   cookieParser(),
   helmet(),
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per window
+    message: 'Too many requests, please try again later.',
+  }),
+  xss(),
   // morgan('combined', {
   //   stream: { write: message => logger.info(`(Acquisitions) ${message.trim()}`) },
   // }),
