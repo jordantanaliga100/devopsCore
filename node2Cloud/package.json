@@ -4,6 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "lint": "eslint . --fix ",
+    "format": "prettier . --write",
     "build": "tsc",
     "start:prod": "NODE_ENV=production  node dist/src/index.js ",
     "start:dev": "NODE_ENV=development tsx watch src/index.ts ",
@@ -11,8 +13,10 @@
     "db:generate:prod": "NODE_ENV=production drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate ",
     "db:studio": "drizzle-kit studio",
-    "lint": "eslint . --fix ",
-    "format": "prettier . --write"
+    "dev:docker": "sh ./scripts/dev.sh",
+    "prod:docker": "sh ./scripts/prod.sh",
+    "git": "sh ./scripts/push.sh",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "keywords": [],
   "author": "",
