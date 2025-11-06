@@ -11,7 +11,7 @@
     "db:generate:prod": "NODE_ENV=production drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate ",
     "db:studio": "drizzle-kit studio",
-    "lint": "eslint . --fix",
+    "lint": "eslint . --fix ",
     "format": "prettier . --write"
   },
   "keywords": [],
@@ -20,29 +20,42 @@
   "description": "",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "dotenv-flow": "^4.1.0",
     "drizzle-orm": "^0.44.7",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
     "winston": "^3.18.3",
-    "ws": "^8.18.3"
+    "ws": "^8.18.3",
+    "xss-clean": "^0.1.4",
+    "xss-clean-types": "^1.0.2",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@tsconfig/node20": "^20.1.6",
+    "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.10.0",
     "drizzle-kit": "^0.31.6",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
+    "prettier": "3.6.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3"
   }
 }

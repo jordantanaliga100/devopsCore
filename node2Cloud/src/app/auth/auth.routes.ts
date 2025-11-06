@@ -1,27 +1,13 @@
 import express from 'express'
+import { LOGIN_USER, LOGOUT_USER, REGISTER_USER } from './auth.controller.js'
 const router = express.Router()
 
 // MODE TWO
-router
-  .route('/')
-  .get((req, res) => {
-    res.send('On Auth ')
-  })
-  .post((req, res) => {
-    // Handle POST request to root
-  })
+router.route('/sign-up').post(REGISTER_USER)
 
-router
-  .route(':id')
-  .get((req, res) => {
-    // Handle GET request for resource with ID
-  })
-  .patch((req, res) => {
-    // Handle PATCH request for resource with ID
-  })
-  .delete((req, res) => {
-    // Handle DELETE request for resource with ID
-  })
+router.route('/sign-in').post(LOGIN_USER)
+
+router.route('/sign-out').get(LOGOUT_USER)
 
 // Export the router
 const AuthRoutes = router
