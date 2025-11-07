@@ -9,7 +9,7 @@ const app: Express = express()
 
 TopMiddlewares.forEach(mw => app.use(mw))
 
-app.get('/', async (req: Request, res: Response) => {
+app.get('/test', async (req: Request, res: Response) => {
   const db = req.app.locals.db
   const data = await db.select().from(userModel)
   res.json({ msg: `Alive 🚀`, data: data })

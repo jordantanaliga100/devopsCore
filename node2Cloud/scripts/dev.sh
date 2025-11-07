@@ -21,7 +21,7 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 # Create .neon_local directory if it doesn't exist
-mkdir -p .neon_local
+# mkdir -p .neon_local
 
 # Add .neon_local to .gitignore if not already present
 if ! grep -q ".neon_local/" .gitignore 2>/dev/null; then
@@ -47,8 +47,9 @@ docker compose -f docker-compose.dev.yaml up --build
 
 echo ""
 echo "🎉 Development environment started!"
-echo "   Application: http://localhost:5173"
+echo "   Application: http://localhost:5000"
 echo "   Database: postgres://neon:npg@localhost:5432/neondb"
 echo ""
 echo "To stop the environment, press Ctrl+C or run: docker compose down"
+
 
