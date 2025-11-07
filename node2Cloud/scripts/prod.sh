@@ -44,3 +44,4 @@ echo ""
 echo "Useful commands:"
 echo "   View logs: docker logs -f acquisition-app-prod"
 echo "   Stop app: docker compose -f docker-compose.prod.yaml down"
+
