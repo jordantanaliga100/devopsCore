@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm'
 import type { Request } from 'express'
 import { ErrorClass } from '../../errors/index.js'
+import { accountModel } from '../../models/account.model.js'
 import { userModel } from '../../models/user.model.js'
 import { Hash } from '../../utils/hash.js'
 
@@ -25,15 +26,27 @@ export class AuthService {
     const hashedPassword = await Hash.create(credentials.password)
 
     // CREATE NEW USER
-    const createdUser = await DB.insert(userModel)
-      .values({ ...credentials, password: hashedPassword })
+    const [createdUser] = await DB.insert(userModel)
+      .values({
+        name: credentials.name,
+        email: credentials.email,
+        password: hashedPassword,
+      })
       .returning({
         id: userModel.id,
         name: userModel.name,
         email: userModel.email,
         role: userModel.role,
-        createdAt: userModel.createdAt,
+        createdAt: userModel.created_at,
       })
+
+    // CREATE NEW ACCOUNT
+    await DB.insert(accountModel).values({
+      userId: createdUser.id,
+      name: credentials.name,
+      email: credentials.email,
+      provider: 'github',
+    })
 
     return createdUser
   }

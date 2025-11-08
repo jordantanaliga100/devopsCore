@@ -10,7 +10,7 @@ services:
     env_file:
       - .env.local
     volumes:
-      # Persist branch metadata per git branch (optional)
+      # Persist branch metadata perg it branch (optional)
       - ./.neon_local/:/tmp/.neon_local
       - ./.git/HEAD:/tmp/.git/HEAD:ro,consistent
     healthcheck:
@@ -37,6 +37,7 @@ services:
       # Mount source code for developemnt hot-reload
       - .:/app
       - /app/node_modules
+
       # Mount logs directory
       - ./logs:/app/logs
     depends_on:
@@ -46,6 +47,7 @@ services:
       - acquisitions-dev
     restart: unless-stopped
     user: root
+    command: sh -c "npm run db:generate && npm run db:migrate && npm run start:dev"
 
 networks:
   acquisitions-dev:

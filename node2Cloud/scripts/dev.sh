@@ -3,25 +3,25 @@
 # Development startup script for Acquisition App with Neon Local
 # This script starts the application in development mode with Neon Local
 
-echo "🚀 Starting Acquisitnion App i Development Mode"
+echo "🚀 Starting Acquisition App in Development Mode"
 echo "================================================"
 
 # Check if .env.development exists
-if [ ! -f .env.local ]; then
-    echo "❌ Error: .env.local file not found!"
-    echo "   Please copy .env.local from the template and update with your Neon credentials."
+if [ ! -f .env.development ]; then
+    echo "❌ Error: .env.development file not found!"
+    echo "   Please copy .env.development from the template and update with your Neon credentials."
     exit 1
 fi
 
 # Check if Docker is running
 if ! docker info >/dev/null 2>&1; then
-    echo "❌ Errtor: Docker is not running!"
-    echo "   Please sart Docker Desktop and try again."
+    echo "❌ Error: Docker is not running!"
+    echo "   Please start Docker Desktop and try again."
     exit 1
 fi
 
 # Create .neon_local directory if it doesn't exist
-# mkdir -p .neon_local
+mkdir -p .neon_local
 
 # Add .neon_local to .gitignore if not already present
 if ! grep -q ".neon_local/" .gitignore 2>/dev/null; then
@@ -51,5 +51,3 @@ echo "   Application: http://localhost:5000"
 echo "   Database: postgres://neon:npg@localhost:5432/neondb"
 echo ""
 echo "To stop the environment, press Ctrl+C or run: docker compose down"
-
-
