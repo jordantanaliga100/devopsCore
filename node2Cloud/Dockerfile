@@ -68,7 +68,7 @@ USER nodejs
 COPY . .
 
 EXPOSE 5000
-CMD ["npm", "run", "start:dev"]   # <--- this runs tsx/ts-node
+CMD ["npm", "run", "start:dev"]   
 
 
 # ============================

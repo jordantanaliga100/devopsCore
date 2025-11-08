@@ -2,17 +2,17 @@ import type { Express, Request, Response } from 'express'
 import express from 'express'
 import { BottomMiddlewares } from './middlewares/Bottom.js'
 import { TopMiddlewares } from './middlewares/Top.js'
-import { userModel } from './models/user.model.js'
+import { accountModel } from './models/account.model.js'
 import { initRoutes } from './routes/initRoutes.js'
 
 const app: Express = express()
 
 TopMiddlewares.forEach(mw => app.use(mw))
 
-app.get('/test', async (req: Request, res: Response) => {
+app.get('/', async (req: Request, res: Response) => {
   const db = req.app.locals.db
-  const data = await db.select().from(userModel)
-  res.json({ msg: `Alive 🚀`, data: data })
+  const data = await db.select().from(accountModel)
+  res.json({ msg: `Alive 🚀 `, data })
 })
 
 app.get('/health', (req: Request, res: Response) => {

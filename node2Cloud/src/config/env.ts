@@ -10,7 +10,7 @@ const envMap: Record<string, string> = {
   local: '.env.local',
 }
 
-const envFile = envMap[env!]
+const envFile = envMap[env]
 
 export const conf = config({ path: envFile! })
 

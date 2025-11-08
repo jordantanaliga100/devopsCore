@@ -1,12 +1,21 @@
 import { neon } from '@neondatabase/serverless'
+import { config } from 'dotenv'
 import { drizzle } from 'drizzle-orm/neon-http'
-import '../config/env.js'
+
+const env = process.env.NODE_ENV || 'development'
+const envFile = env === 'production' ? '.env.prod' : '.env.local'
+export const conf = config({ path: envFile! })
 
 export async function initDb() {
-  try {
-    const dbUrl = process.env.DB_URL
-    if (!dbUrl) throw new Error('❌ Missing DB_URL in environment variables')
+  const dbUrl = process.env.DB_URL
 
+  // if (process.env.NODE_ENV === 'development') {
+  //   neonConfig.fetchEndpoint = 'http://neon-local:5432/sql'
+  //   neonConfig.useSecureWebSocket = false
+  //   neonConfig.poolQueryViaFetch = true
+  // }
+  try {
+    if (!dbUrl) throw new Error('❌ Missing DATABASE_URL in environment variables')
     const sql = neon(dbUrl)
     const db = drizzle({ client: sql })
 

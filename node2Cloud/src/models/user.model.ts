@@ -1,4 +1,5 @@
-import { pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, serial, varchar } from 'drizzle-orm/pg-core'
+import { timeStamps } from './helpers.js'
 
 export const userModel = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -6,6 +7,5 @@ export const userModel = pgTable('users', {
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: varchar('password', { length: 255 }).notNull(),
   role: varchar('role', { length: 255 }).notNull().default('user'),
-  createdAt: timestamp().defaultNow().notNull(),
-  updatedAt: timestamp().defaultNow().notNull(),
+  ...timeStamps,
 })
