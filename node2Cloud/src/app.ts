@@ -13,7 +13,11 @@ app.get('/', async (req: Request, res: Response) => {
   const db = req.app.locals.db
   const data = await db.select().from(accountModel)
 
-  res.json({ msg: `Alive 🚀 `, data })
+  res.json({
+    msg: `Alive 🚀 `,
+    status: `Hello from docker 🔥🔥🔥`,
+    data,
+  })
 })
 
 app.get('/health', (req: Request, res: Response) => {

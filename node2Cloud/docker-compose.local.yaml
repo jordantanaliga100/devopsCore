@@ -1,0 +1,49 @@
+services:
+  # Neon local
+  neon-local:
+    image: neondatabase/neon_local:latest
+    container_name: acquisitions-neon-local
+    ports:
+      - '4321:5432'
+    env_file:
+      - .env.local
+    volumes:
+      - ./.neon_local/:/tmp/.neon_local
+      - ./.git/HEAD:/tmp/.git/HEAD:ro,consistent
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-h', 'localhost', '-p', '5432', '-U', 'neon']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    networks:
+      - acquisitions-local
+    profiles:
+      - local
+  # Node.js application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: local
+    container_name: acquisitions-app-dev
+    ports:
+      - '${PORT:-3000}:3000'
+    env_file:
+      - .env.local
+    networks:
+      - acquisitions-local
+    volumes:
+      # Mount source code for developemnt hot-reload
+      - .:/app
+      - /app/node_modules
+      - ./src/drizzle:/app/src/drizzle
+      - ./src/logs:/app/logs
+    restart: unless-stopped
+    user: root
+    profiles:
+      - local
+
+networks:
+  acquisitions-local:
+    driver: bridge

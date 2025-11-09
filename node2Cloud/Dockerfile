@@ -24,6 +24,17 @@ COPY . .
 EXPOSE 5000
 CMD ["npm", "run", "start:dev"]   
 
+# ============================
+# Local stage (TS direct run)
+# ============================
+FROM base AS local
+USER root
+RUN npm ci && npm cache clean --force
+USER nodejs
+COPY . .
+EXPOSE 5000
+CMD ["npm", "run", "start:local"]   
+
 
 # ============================
 # Builder stage (TS → JS compile)
@@ -92,4 +103,4 @@ CMD ["npm", "run", "start:prod"]
 
 # # Production stage
 # FROM base AS production
-# CMD ["npm", "start:prod"]
+# CMD ["npm", "start:prod"]"

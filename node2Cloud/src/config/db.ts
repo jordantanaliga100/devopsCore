@@ -1,4 +1,4 @@
-import { neon } from '@neondatabase/serverless'
+import { neon, neonConfig } from '@neondatabase/serverless'
 import { drizzle } from 'drizzle-orm/neon-http'
 
 export async function initDb() {
@@ -6,15 +6,13 @@ export async function initDb() {
     const dbUrl = process.env.DATABASE_URL
     if (!dbUrl) throw new Error('❌ Missing DATABASE_URL in environment variables')
 
+    neonConfig.fetchEndpoint = 'http://neon-local:5432/sql'
+    neonConfig.useSecureWebSocket = false
+    neonConfig.poolQueryViaFetch = true
+
     const sql = neon(dbUrl)
 
-    let db
-    try {
-      db = drizzle({ client: sql })
-    } catch (innerErr) {
-      console.error('🔥 Drizzle initialization failed:', innerErr)
-      process.exit(1)
-    }
+    const db = drizzle({ client: sql })
 
     console.log('✅ Database connection initialized successfully')
     return db
