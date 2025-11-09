@@ -4,8 +4,8 @@ const env = process.env.NODE_ENV || 'production'
 
 const envMap: Record<string, string> = {
   production: '.env.prod',
-  development: '.env.local',
-  staging: 'env.staging',
+  development: '.env.dev',
+  staging: '.env.staging',
   test: '.env.test',
   local: '.env.local',
 }

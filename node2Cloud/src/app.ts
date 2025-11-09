@@ -12,6 +12,7 @@ TopMiddlewares.forEach(mw => app.use(mw))
 app.get('/', async (req: Request, res: Response) => {
   const db = req.app.locals.db
   const data = await db.select().from(accountModel)
+
   res.json({ msg: `Alive 🚀 `, data })
 })
 
