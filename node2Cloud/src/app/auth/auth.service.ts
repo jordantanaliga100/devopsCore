@@ -1,26 +1,21 @@
 import { eq } from 'drizzle-orm'
-import type { Request } from 'express'
+import { DB } from '../../config/db.js'
 import { ErrorClass } from '../../errors/index.js'
 import { accountModel } from '../../models/account.model.js'
 import { userModel } from '../../models/user.model.js'
 import { Hash } from '../../utils/hash.js'
 
 export class AuthService {
-  static async register(
-    req: Request,
-    credentials: { name: string; email: string; password: string }
-  ) {
-    const DB = req.app.locals.db
-
+  static async register(credentials: { name: string; email: string; password: string }) {
     const existingUser = await DB.select()
       .from(userModel)
       .where(eq(userModel.email, credentials.email))
-      .limit()
+      .limit(1)
 
     console.log('eisiting user', existingUser)
 
     if (existingUser.length > 0) {
-      throw new ErrorClass.BadRequest(`💁 User already exists: ${existingUser[0].email}`)
+      throw new ErrorClass.BadRequest(`💁 User already exists: ${existingUser[0]!.email}`)
     }
     // // HASHED PASSWORD HERE
     const hashedPassword = await Hash.create(credentials.password)
@@ -42,7 +37,7 @@ export class AuthService {
 
     // CREATE NEW ACCOUNT
     await DB.insert(accountModel).values({
-      userId: createdUser.id,
+      userId: createdUser!.id,
       name: credentials.name,
       email: credentials.email,
       provider: 'github',
@@ -50,8 +45,7 @@ export class AuthService {
 
     return createdUser
   }
-  static async login(req: Request, credentials: { email: string; password: string }) {
-    const DB = req.app.locals.db
+  static async login(credentials: { email: string; password: string }) {
     const existingUser = await DB.select()
       .from(userModel)
       .where(eq(userModel.email, credentials.email))
@@ -62,8 +56,11 @@ export class AuthService {
     }
 
     const user = existingUser[0]
+    if (!user) {
+      throw new ErrorClass.BadRequest(`💁 User with email: ${credentials.email} doesnt exist`)
+    }
     // comare pasword
-    const isMatch = await Hash.compare(credentials.password, user.password)
+    const isMatch = await Hash.compare(credentials.password, user!.password)
 
     if (!isMatch) {
       throw new ErrorClass.BadRequest('Invalid email or password')

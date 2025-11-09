@@ -16,7 +16,7 @@ export const REGISTER_USER = async (req: Request, res: Response, next: NextFunct
       })
     }
     // AUTH SERVICE HERE...
-    const result = await AuthService.register(req, validationResult.data)
+    const result = await AuthService.register(validationResult.data)
 
     res.status(200).json({ status: 'OK', message: 'User registererd', data: result })
   } catch (error: unknown) {
@@ -40,20 +40,17 @@ export const LOGIN_USER = async (
         details: formatValidationErro(validationResult.error),
       })
     }
-    const result = await AuthService.login(req, validationResult.data)
+    const result = await AuthService.login(validationResult.data)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...authenticatedUser } = result
-    Cookie.set(res, 'session', { id: authenticatedUser.id, email: authenticatedUser.email })
+    Cookie.set(res, 'session', { id: result.id, email: result.email })
 
-    res.status(200).json({ status: 'OK', message: 'User login', data: authenticatedUser })
+    res.status(200).json({ status: 'OK', message: 'User login', data: result })
   } catch (error: unknown) {
     if (error instanceof Error) {
       next(error)
     }
   }
 }
-
 // User Logout
 
 export const LOGOUT_USER = async (

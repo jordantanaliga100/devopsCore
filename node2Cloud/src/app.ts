@@ -1,5 +1,6 @@
 import type { Express, Request, Response } from 'express'
 import express from 'express'
+import { DB } from './config/db.js'
 import { BottomMiddlewares } from './middlewares/Bottom.js'
 import { TopMiddlewares } from './middlewares/Top.js'
 import { accountModel } from './models/account.model.js'
@@ -10,8 +11,7 @@ const app: Express = express()
 TopMiddlewares.forEach(mw => app.use(mw))
 
 app.get('/', async (req: Request, res: Response) => {
-  const db = req.app.locals.db
-  const data = await db.select().from(accountModel)
+  const data = await DB.select().from(accountModel)
 
   res.json({
     msg: `Alive 🚀 `,
