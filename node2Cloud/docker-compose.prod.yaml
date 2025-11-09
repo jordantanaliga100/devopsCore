@@ -9,7 +9,7 @@ services:
       target: production
     container_name: acquisition-app-prod
     ports:
-      - '5000:5000'
+      - '${PORT:-8080}:8080'
     env_file:
       - .env.prod
     networks:
@@ -21,7 +21,7 @@ services:
           'CMD',
           'node',
           '-e',
-          "const http = require('http'); const req = http.request({hostname: 'localhost', port: 3000, path: '/health'}, (res) => process.exit(res.statusCode === 200 ? 0 : 1)); req.on('error', () => process.exit(1)); req.end();",
+          "const http = require('http'); const req = http.request({hostname: 'localhost', port: 5000, path: '/health'}, (res) => process.exit(res.statusCode === 200 ? 0 : 1)); req.on('error', () => process.exit(1)); req.end();",
         ]
       interval: 30s
       timeout: 10s

@@ -1,3 +1,54 @@
+
+
+# 🔥 MODERN WAY 🔥 
+# ============================
+# Base minimal layer
+# ============================
+FROM node:20-alpine AS base
+WORKDIR /app
+COPY package*.json ./
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs \
+  && adduser -u 1001 -S nodejs
+USER nodejs
+
+
+# ============================
+# Development stage (TS direct run)
+# ============================
+FROM base AS development
+USER root
+RUN npm ci && npm cache clean --force
+USER nodejs
+COPY . .
+EXPOSE 5000
+CMD ["npm", "run", "start:dev"]   
+
+
+# ============================
+# Builder stage (TS → JS compile)
+# ============================
+FROM base AS builder
+USER root
+RUN npm ci && npm cache clean --force
+COPY . .
+RUN npm run build
+USER nodejs
+
+
+# ============================
+# Production (run JS only)
+# ============================
+FROM builder AS production
+WORKDIR /app
+USER root
+RUN npm ci --only=production && npm cache clean --force
+USER nodejs
+EXPOSE 5000
+CMD ["npm", "run", "start:prod"]
+
+
+
 # 🔥 OLD WAY 🔥 
 
 # # Multi-stage Dockerfile for Node.js acquisitions application
@@ -42,59 +93,3 @@
 # # Production stage
 # FROM base AS production
 # CMD ["npm", "start:prod"]
-
-
-# 🔥 MODERN WAY 🔥 
-# ============================
-# Base minimal layer
-# ============================
-FROM node:20-alpine AS base
-WORKDIR /app
-COPY package*.json ./
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs \
-  && adduser -u 1001 -S nodejs
-USER nodejs
-
-
-# ============================
-# Development stage (TS direct run)
-# ============================
-FROM base AS development
-USER root
-RUN npm ci && npm cache clean --force
-USER nodejs
-
-COPY . .
-
-EXPOSE 5000
-CMD ["npm", "run", "start:dev"]   
-
-
-# ============================
-# Builder stage (TS → JS compile)
-# ============================
-FROM base AS builder
-USER root
-RUN npm ci && npm cache clean --force
-USER nodejs
-
-COPY . .
-RUN npm run build
-
-
-# ============================
-# Production (run JS only)
-# ============================
-FROM node:20-alpine AS production
-WORKDIR /app
-
-COPY package*.json ./
-USER root
-RUN npm ci --only=production && npm cache clean --force
-USER nodejs
-
-COPY --from=builder /app/dist ./dist
-
-EXPOSE 5000
-CMD ["npm", "run", "start:prod"]

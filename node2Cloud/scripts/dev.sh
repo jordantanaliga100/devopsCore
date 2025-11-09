@@ -7,9 +7,9 @@ echo "🚀 Starting Acquisition App in Development Mode"
 echo "================================================"
 
 # Check if .env.development exists
-if [ ! -f .env.development ]; then
-    echo "❌ Error: .env.development file not found!"
-    echo "   Please copy .env.development from the template and update with your Neon credentials."
+if [ ! -f .env.local ]; then
+    echo "❌ Error: .env.local file not found!"
+    echo "   Please copy .env.local from the template and update with your Neon credentials."
     exit 1
 fi
 
@@ -51,3 +51,4 @@ echo "   Application: http://localhost:5000"
 echo "   Database: postgres://neon:npg@localhost:5432/neondb"
 echo ""
 echo "To stop the environment, press Ctrl+C or run: docker compose down"
+
