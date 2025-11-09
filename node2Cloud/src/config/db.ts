@@ -21,3 +21,5 @@ export async function initDb() {
     process.exit(1)
   }
 }
+
+export const DB = await initDb()
