@@ -1,27 +1,3 @@
-# #!/bin/bash
-
-# echo "Starting interactive GIT 👁️‍🗨️..."
-
-# # add all changes...
-# git add .
-# # ask me a commit message
-# read -p "✏️ Enter a commit message: " msg
-# # validate message 
-# if [ -z "$msg" ]; then 
-#   echo "🎌 Commit message cannot be empty!"
-#   exit 1 
-# fi 
-
-# git commit -m "$msg"
-
-# echo "✅ Commit Complete"
-
-# echo "✅ Pushing changes to remote repo"
-# git push origin "$(git branch --show-current)"
-
-# echo "💁 : Done !"
-
-
 #!/bin/bash
 
 # =============== COLORS ===============
@@ -64,6 +40,8 @@ case $type_choice in
   *) echo -e "${RED}❌ Invalid choice!${NC}"; exit 1;;
 esac
 
+read -p "📦 Enter scope (e.g., package.json, server, ui) or leave empty: " scope
+
 read -p "✏️ Enter commit message: " msg
 
 if [ -z "$msg" ]; then
@@ -71,13 +49,16 @@ if [ -z "$msg" ]; then
   exit 1
 fi
 
-# Full commit message
-commit="$prefix: $msg"
+# Build full commit message
+if [ -z "$scope" ]; then
+  commit="$prefix: $msg"
+else
+  commit="$prefix($scope): $msg"
+fi
 
 git commit -m "$commit"
 
 echo -e "${GREEN}✅ Commit created: ${NC}$commit"
-
 
 # =============== SPINNER FUNCTION ===============
 spinner() {
