@@ -1,5 +1,6 @@
 node_modules
 .env
+.env.dev
 .env.local
 .env.prod
 # Logs
@@ -7,3 +8,4 @@ node_modules
 logs/
 
 .neon_local/
+

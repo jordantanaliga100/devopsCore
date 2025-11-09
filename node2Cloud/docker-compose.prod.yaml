@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Application Service for Production
   app:
@@ -13,16 +11,10 @@ services:
     env_file:
       - .env.prod
     networks:
-      - acquisition-production
+      - acquisition-prod
     restart: unless-stopped
     healthcheck:
-      test:
-        [
-          'CMD',
-          'node',
-          '-e',
-          "const http = require('http'); const req = http.request({hostname: 'localhost', port: 5000, path: '/health'}, (res) => process.exit(res.statusCode === 200 ? 0 : 1)); req.on('error', () => process.exit(1)); req.end();",
-        ]
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -45,13 +37,15 @@ services:
       options:
         max-size: '10m'
         max-file: '3'
+    profiles:
+      - prod
 
 networks:
-  acquisition-production:
+  acquisition-prod:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
+    # ipam:
+    #   config:
+    #     - subnet: 172.21.0.0/16
 # Optional: External networks for production deployments
 # networks:
 #   acquisition-production:

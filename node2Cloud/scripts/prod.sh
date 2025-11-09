@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e 
 # Production deployment script for Acquisition App
 # This script starts the application in production mode with Neon Cloud Database
 
@@ -20,13 +20,9 @@ if ! docker info >/dev/null 2>&1; then
     exit 1
 fi
 
-echo "📦 Building and starting production container..."
-echo "   - Using Neon Cloud Database (no local proxy)"
-echo "   - Running in optimized production mode"
-echo ""
 
 # Start production environment
-docker compose -f docker-compose.prod.yaml up --build -d
+docker compose -f docker-compose.prod.yaml --profile prod up -d --build 
 
 # Wait for DB to be ready (basic health check)
 echo "⏳ Waiting for Neon Local to be ready..."
@@ -34,11 +30,11 @@ sleep 5
 
 # Run migrations with Drizzle
 echo "📜 Applying latest schema with Drizzle..."
-npm run db:migrate
+docker compose exec app npm run db:migrate
 
 echo ""
 echo "🎉 Production environment started!"
-echo "   Application: http://localhost:5000"
+echo "   Application: http://localhost:8080"
 echo "   Logs: docker logs acquisition-app-prod"
 echo ""
 echo "Useful commands:"
