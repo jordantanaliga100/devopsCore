@@ -1,14 +1,15 @@
 import express from 'express'
+import { AuthGuard, RoleGuard } from '../../middlewares/Guards.js'
 import { DELETE, GET, GET_ALL, UPDATE } from './user.controller.js'
 const router = express.Router()
 
 // MODE TWO
-router.route('/').get(GET_ALL)
+router.route('/').get(AuthGuard, GET_ALL)
 router
   .route('/:id') // ← add the missing slash
-  .get(GET)
-  .patch(UPDATE)
-  .delete(DELETE)
+  .get(AuthGuard, GET)
+  .patch(AuthGuard, UPDATE)
+  .delete(AuthGuard, RoleGuard(['admin']), DELETE)
 
 // Export the router
 const UserRoutes = router
