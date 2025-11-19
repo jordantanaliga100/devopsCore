@@ -3,7 +3,7 @@ import { DrizzleQueryError, eq } from 'drizzle-orm'
 import { DB } from '../../config/db.js'
 import { ErrorClass } from '../../errors/index.js'
 import { userModel } from '../../models/user.model.js'
-import type { UpdateUserInput, User } from '../../types/user.type.js'
+import type { UpdateUserInput, User } from '../../types/user.types.js'
 
 export class UserService {
   static async getAllUsers(): Promise<User[]> {

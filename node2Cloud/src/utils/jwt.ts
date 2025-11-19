@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { ErrorClass } from '../errors/index.js'
 
 export interface JWTPayload {
-  id?: string
+  id?: string | number
   email?: string
   role?: string
   [key: string]: unknown

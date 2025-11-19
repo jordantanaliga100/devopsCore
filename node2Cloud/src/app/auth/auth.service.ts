@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { eq } from 'drizzle-orm'
 import { DB } from '../../config/db.js'
 import { ErrorClass } from '../../errors/index.js'
@@ -65,7 +66,8 @@ export class AuthService {
     if (!isMatch) {
       throw new ErrorClass.BadRequest('Invalid email or password')
     }
-    return user
+    const { password: _, ...safeUser } = user
+    return safeUser
   }
   // static async logout(userId: string) {}
   // static async refreshToken(token: string) {}

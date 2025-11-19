@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
 import { ErrorClass } from '../../errors/index.js'
-import type { UpdateUserInput } from '../../types/user.type.js'
+import type { UpdateUserInput } from '../../types/user.types.js'
 import { formatValidationErro } from '../../utils/format.js'
 import { updateUserSchema, userIdSchema } from '../../validations/user.validation.js'
 import { UserService } from './user.service.js'
