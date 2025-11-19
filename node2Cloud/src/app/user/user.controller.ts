@@ -39,7 +39,7 @@ export const GET = async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserService.getUser(id)
 
     if (!user) {
-      throw new ErrorClass.NotFound(`💁 User not found !`)
+      throw new ErrorClass.NotFound(`💁 User with id: ${userId} doesnt exist `)
     }
 
     res.json({
@@ -102,15 +102,37 @@ export const GET = async (req: Request, res: Response, next: NextFunction) => {
 //   }
 // }
 
-// export const DELETE = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const {
-//       params,
-//       body: {},
-//     } = req
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       next(error)
-//     }
-//   }
-// }
+export const DELETE = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {
+      params: { id: userId },
+    } = req
+    console.log('PARSED ID', typeof userId)
+
+    // Validate ID
+    const validationResult = userIdSchema.safeParse({ id: userId })
+    if (!validationResult.success) {
+      return res.status(400).json({
+        error: 'Validation failed',
+        details: formatValidationErro(validationResult.error),
+      })
+    }
+
+    const { id } = validationResult.data
+
+    // Call service
+    const deleted = await UserService.deleteUser(id)
+
+    if (!deleted) {
+      throw new ErrorClass.NotFound(`💁 User with id: ${userId} doesnt exist `)
+    }
+
+    return res.status(200).json({
+      message: 'User deleted successfully',
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      next(error)
+    }
+  }
+}
