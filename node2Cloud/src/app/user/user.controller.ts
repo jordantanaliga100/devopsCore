@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from 'express'
 import { ErrorClass } from '../../errors/index.js'
+import type { UpdateUserInput } from '../../types/user.type.js'
 import { formatValidationErro } from '../../utils/format.js'
-import { userIdSchema } from '../../validations/user.validation.js'
+import { updateUserSchema, userIdSchema } from '../../validations/user.validation.js'
 import { UserService } from './user.service.js'
 
 export const GET_ALL = async (req: Request, res: Response, next: NextFunction) => {
@@ -53,54 +54,61 @@ export const GET = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-// export const UPDATE = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const idValid = userIdSchema.safeParse({ id: req.params.id })
+export const UPDATE = async (
+  req: Request<
+    { id: string },
+    object,
+    Partial<{
+      name: string
+      email: string
+      role: 'user' | 'admin'
+      password: string
+    }>
+  >,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id: userId } = req.params
+    const updates = req.body // partial fields
 
-//     // validate id
-//     if (!idValid.success) {
-//       return res.status(200).json({
-//         error: 'Validation failed',
-//         details: formatValidationErro(idValid.error),
-//       })
-//     }
+    //validate id
+    const idResult = userIdSchema.safeParse({ id: userId })
+    if (!idResult.success) {
+      return res.status(400).json({
+        error: 'Invalid user ID',
+        details: formatValidationErro(idResult.error),
+      })
+    }
 
-//     //validate body
-//     const bodyValid = updateUserSchema.safeParse(req.body)
-//     if (!bodyValid.success) {
-//       return res.status(200).json({
-//         error: 'Validation failed',
-//         details: formatValidationErro(bodyValid.error),
-//       })
-//     }
+    // validate body
+    const bodyResult = updateUserSchema.safeParse(updates)
+    if (!bodyResult.success) {
+      return res.status(400).json({
+        error: 'Validation failed',
+        details: formatValidationErro(bodyResult.error),
+      })
+    }
 
-//     const { id } = idValid.data
-//     const updates = bodyValid.data
+    const { id } = idResult.data
+    const validUpdates = bodyResult.data
 
-//     // checks auth
-//     if (req.user.role !== 'admin' && req.user.id !== id) {
-//       return res.status(403).json({
-//         error: 'Access denied',
-//         message: 'You can only update your own information',
-//       })
-//     }
+    // call service
+    const updatedUser = await UserService.updateUser(id, validUpdates as UpdateUserInput)
+    if (!updatedUser) {
+      throw new ErrorClass.NotFound(`💁 User with id ${id} not found`)
+    }
 
-//     // Remove role from updates if non-admin user is trying to update their own profile
-//     if (req.user.role !== 'admin') {
-//       delete updates.role
-//     }
-
-//     const updatedUser = await UserService.updateUser(id, updates)
-//     res.json({
-//       message: 'User updated successfully',
-//       user: updatedUser,
-//     })
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       next(error)
-//     }
-//   }
-// }
+    return res.status(200).json({
+      message: 'User updated successfully',
+      user: updatedUser,
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      next(error)
+    }
+  }
+}
 
 export const DELETE = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -136,3 +144,44 @@ export const DELETE = async (req: Request, res: Response, next: NextFunction) =>
     }
   }
 }
+
+// const idValid = userIdSchema.safeParse({ id: req.params.id })
+
+// // validate id
+// if (!idValid.success) {
+//   return res.status(200).json({
+//     error: 'Validation failed',
+//     details: formatValidationErro(idValid.error),
+//   })
+// }
+
+// //validate body
+// const bodyValid = updateUserSchema.safeParse(req.body)
+// if (!bodyValid.success) {
+//   return res.status(200).json({
+//     error: 'Validation failed',
+//     details: formatValidationErro(bodyValid.error),
+//   })
+// }
+
+// const { id } = idValid.data
+// const updates = bodyValid.data
+
+// // checks auth
+// if (req.user.role !== 'admin' && req.user.id !== id) {
+//   return res.status(403).json({
+//     error: 'Access denied',
+//     message: 'You can only update your own information',
+//   })
+// }
+
+// // Remove role from updates if non-admin user is trying to update their own profile
+// if (req.user.role !== 'admin') {
+//   delete updates.role
+// }
+
+// const updatedUser = await UserService.updateUser(id, updates)
+// res.json({
+//   message: 'User updated successfully',
+//   user: updatedUser,
+// })
