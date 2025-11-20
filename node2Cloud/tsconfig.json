@@ -9,8 +9,8 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
-    "target": "esnext",
-    "types": ["node"],
+    "target": "es2022",
+    "types": ["node", "jest"],
     "moduleResolution": "nodenext",
     // For nodejs:
     // "lib": ["esnext"],
@@ -36,14 +36,14 @@
 
     // Recommended Options
     "strict": true,
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
     "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
+    "isolatedModules": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.test.ts"],
   "exclude": ["node_modules", "dist", "eslint.config.ts"]
 }
